@@ -96,7 +96,7 @@ Replace <PORT> and <HOST> with the good value::
 
 Enable this virtual host by creating a symbolic link ::
 
-        sudo ln -s /etc/nginx/sites-enable/annso /etc/nginx/sites-available/annso 
+        sudo ln -s /etc/nginx/sites-available/annso /etc/nginx/sites-enable/annso
         sudo /etc/init.d/nginx restart
 	
 
