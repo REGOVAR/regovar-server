@@ -22,14 +22,14 @@ CREATE TYPE annotation_db_type AS ENUM ('site', 'variant', 'transcript');
 CREATE TABLE public.template
 (
     id serial NOT NULL,
-    name character varying(100) COLLATE pg_catalog."C.UTF-8",
-    author character varying(255) COLLATE pg_catalog."C.UTF-8",
-    description text COLLATE pg_catalog."C.UTF-8",
-    version character varying(20) COLLATE pg_catalog."C.UTF-8",
+    name character varying(100) COLLATE pg_catalog."C",
+    author character varying(255) COLLATE pg_catalog."C",
+    description text COLLATE pg_catalog."C",
+    version character varying(20) COLLATE pg_catalog."C",
     creation_date timestamp without time zone,
     update_date timestamp without time zone,
     parent_id integer,
-    configuration text COLLATE pg_catalog."C.UTF-8",
+    configuration text COLLATE pg_catalog."C",
     CONSTRAINT template_pkey PRIMARY KEY (id)
 );
 ALTER TABLE public.template OWNER TO annso;
@@ -41,14 +41,14 @@ ALTER TABLE public.template OWNER TO annso;
 CREATE TABLE public.analysis
 (
     id serial NOT NULL,
-    name character varying(50) COLLATE pg_catalog."C.UTF-8",
-    comments text COLLATE pg_catalog."C.UTF-8",
+    name character varying(50) COLLATE pg_catalog."C",
+    comments text COLLATE pg_catalog."C",
     template_id integer,
-    settings text COLLATE pg_catalog."C.UTF-8",
+    settings text COLLATE pg_catalog."C",
     creation_date timestamp without time zone,
     update_date timestamp without time zone,
     total_variants integer DEFAULT 0,
-    status character varying(20) COLLATE pg_catalog."C.UTF-8",
+    status character varying(20) COLLATE pg_catalog."C",
     reference_id integer DEFAULT 2,  -- 2 is for Hg19
     CONSTRAINT analysis_pkey PRIMARY KEY (id),
     CONSTRAINT analysis_template_id_fkey FOREIGN KEY (template_id)
@@ -64,10 +64,10 @@ CREATE TABLE public.report
 (
     id serial NOT NULL,
     analysis_id integer,
-    name character varying(255) COLLATE pg_catalog."C.UTF-8",
-    path character varying(255) COLLATE pg_catalog."C.UTF-8",
-    type character varying(50) COLLATE pg_catalog."C.UTF-8",
-    module_id character varying(50) COLLATE pg_catalog."C.UTF-8",
+    name character varying(255) COLLATE pg_catalog."C",
+    path character varying(255) COLLATE pg_catalog."C",
+    type character varying(50) COLLATE pg_catalog."C",
+    module_id character varying(50) COLLATE pg_catalog."C",
     creation_date timestamp without time zone,
     CONSTRAINT report_pkey PRIMARY KEY (id)
 );
@@ -80,9 +80,9 @@ CREATE TABLE public.filter
 (
     id serial NOT NULL,
     analysis_id integer,
-    name character varying(255) COLLATE pg_catalog."C.UTF-8",
-    description text COLLATE pg_catalog."C.UTF-8",
-    filter text COLLATE pg_catalog."C.UTF-8",
+    name character varying(255) COLLATE pg_catalog."C",
+    description text COLLATE pg_catalog."C",
+    filter text COLLATE pg_catalog."C",
     total_variants integer,
     CONSTRAINT filter_pkey PRIMARY KEY (id),
     CONSTRAINT filter_analysis_id_fkey FOREIGN KEY (analysis_id)
@@ -106,10 +106,10 @@ ALTER TABLE public.filter OWNER TO annso;
 CREATE TABLE public."reference"
 (
     id serial NOT NULL,
-    name character varying(50) COLLATE pg_catalog."C.UTF-8",
-    description character varying(255) COLLATE pg_catalog."C.UTF-8",
-    url character varying(255) COLLATE pg_catalog."C.UTF-8",
-    table_suffix character varying(10) COLLATE pg_catalog."C.UTF-8",
+    name character varying(50) COLLATE pg_catalog."C",
+    description character varying(255) COLLATE pg_catalog."C",
+    url character varying(255) COLLATE pg_catalog."C",
+    table_suffix character varying(10) COLLATE pg_catalog."C",
     CONSTRAINT reference_pkey PRIMARY KEY (id)
 );
 ALTER TABLE public."reference" OWNER TO annso;
@@ -121,10 +121,10 @@ ALTER TABLE public."reference" OWNER TO annso;
 CREATE TABLE public.file
 (
     id serial NOT NULL,
-    filename character varying(255) COLLATE pg_catalog."C.UTF-8",
+    filename character varying(255) COLLATE pg_catalog."C",
     comments text,
-    type character varying(10) COLLATE pg_catalog."C.UTF-8",
-    "path" character varying(255) COLLATE pg_catalog."C.UTF-8",
+    type character varying(10) COLLATE pg_catalog."C",
+    "path" character varying(255) COLLATE pg_catalog."C",
     size integer,
     upload_offset integer,
     reference_id integer,
@@ -145,8 +145,8 @@ ALTER TABLE public.file OWNER TO annso;
 CREATE TABLE public.sample
 (
     id serial NOT NULL,
-    name character varying(50) COLLATE pg_catalog."C.UTF-8",
-    comments character varying(255) COLLATE pg_catalog."C.UTF-8",
+    name character varying(50) COLLATE pg_catalog."C",
+    comments character varying(255) COLLATE pg_catalog."C",
     is_mosaic boolean,
     CONSTRAINT sample_pkey PRIMARY KEY (id)
 );
@@ -174,7 +174,7 @@ CREATE TABLE public.analysis_sample
 (
     analysis_id integer NOT NULL,
     sample_id integer NOT NULL,
-    nickname character varying(255) COLLATE pg_catalog."C.UTF-8",
+    nickname character varying(255) COLLATE pg_catalog."C",
     CONSTRAINT analysis_sample_pkey PRIMARY KEY (analysis_id, sample_id),
     CONSTRAINT analysis_sample_analysis_id_fkey FOREIGN KEY (analysis_id)
         REFERENCES public."analysis" (id) MATCH SIMPLE
@@ -190,8 +190,8 @@ CREATE TABLE public.attribute
 (
     analysis_id integer NOT NULL,
     sample_id integer NOT NULL,
-    name character varying(255) COLLATE pg_catalog."C.UTF-8" NOT NULL,
-    value character varying(255) COLLATE pg_catalog."C.UTF-8",
+    name character varying(255) COLLATE pg_catalog."C" NOT NULL,
+    value character varying(255) COLLATE pg_catalog."C",
     CONSTRAINT attribute_pkey PRIMARY KEY (analysis_id, sample_id, name),
     CONSTRAINT attribute_analysis_id_fkey FOREIGN KEY (analysis_id)
         REFERENCES public."analysis" (id) MATCH SIMPLE
@@ -239,7 +239,7 @@ CREATE TABLE public.sample_variant_hg19
     variant_id bigint,
     genotype integer,
     depth integer,
-    info character varying(255)[][] COLLATE pg_catalog."C.UTF-8",
+    info character varying(255)[][] COLLATE pg_catalog."C",
     mosaic real,
     CONSTRAINT sample_variant_hg19_pkey PRIMARY KEY (sample_id, chr, pos, ref, alt),
     CONSTRAINT sample_variant_hg19_variant_id_fkey FOREIGN KEY (variant_id)
@@ -259,18 +259,18 @@ ALTER TABLE public.sample_variant_hg19 OWNER TO annso;
 
 CREATE TABLE public.annotation_database
 (
-    uid character varying(32) COLLATE pg_catalog."C.UTF-8",
+    uid character varying(32) COLLATE pg_catalog."C",
     reference_id integer NOT NULL,
-    name character varying(255) COLLATE pg_catalog."C.UTF-8" NOT NULL,
-    version character varying(255) COLLATE pg_catalog."C.UTF-8" NOT NULL,
-    name_ui character varying(255) COLLATE pg_catalog."C.UTF-8",
+    name character varying(255) COLLATE pg_catalog."C" NOT NULL,
+    version character varying(255) COLLATE pg_catalog."C" NOT NULL,
+    name_ui character varying(255) COLLATE pg_catalog."C",
     description text,
     type annotation_db_type,
     ord integer,
     url text ,
     update_date timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     jointure text,
-    db_pk_field_uid character varying(32) COLLATE pg_catalog."C.UTF-8",
+    db_pk_field_uid character varying(32) COLLATE pg_catalog."C",
     CONSTRAINT annotation_database_pkey PRIMARY KEY (reference_id, name, version),
     CONSTRAINT annotation_database_reference_id_fkey FOREIGN KEY (reference_id)
         REFERENCES public."reference" (id) MATCH SIMPLE
@@ -280,10 +280,10 @@ ALTER TABLE public.annotation_database OWNER TO annso;
 
 CREATE TABLE public.annotation_field
 (
-    uid character varying(32) COLLATE pg_catalog."C.UTF-8",
-    database_uid character varying(32) COLLATE pg_catalog."C.UTF-8" NOT NULL,
-    name character varying(255) COLLATE pg_catalog."C.UTF-8" NOT NULL,
-    name_ui character varying(255) COLLATE pg_catalog."C.UTF-8",
+    uid character varying(32) COLLATE pg_catalog."C",
+    database_uid character varying(32) COLLATE pg_catalog."C" NOT NULL,
+    name character varying(255) COLLATE pg_catalog."C" NOT NULL,
+    name_ui character varying(255) COLLATE pg_catalog."C",
     ord integer,
     description text,
     type field_type,
@@ -299,9 +299,9 @@ ALTER TABLE public.annotation_field OWNER TO annso;
 
 CREATE TABLE public."parameter"
 (
-    key character varying(255) COLLATE pg_catalog."C.UTF-8" NOT NULL ,
-    value character varying(255) COLLATE pg_catalog."C.UTF-8" NOT NULL,
-    description character varying(255) COLLATE pg_catalog."C.UTF-8",
+    key character varying(255) COLLATE pg_catalog."C" NOT NULL ,
+    value character varying(255) COLLATE pg_catalog."C" NOT NULL,
+    description character varying(255) COLLATE pg_catalog."C",
     CONSTRAINT parameter_pkey PRIMARY KEY (key)
 );
 ALTER TABLE public."parameter" OWNER TO annso;
